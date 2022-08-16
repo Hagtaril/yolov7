@@ -1,0 +1,4 @@
+python train.py --workers 8 --device 0 --batch-size 32 --data data/coco_devcloud.yaml --img 640 640 --cfg cfg/training/yolov7.yaml --weights '' --name yolov7 --hyp data/hyp.scratch.p5.yaml
+
+
+/apdcephfs/share_782420/hagtliu/ft_local/run_docker.sh mirrors.tencent.com/lq_vision/hagtliu_hand:v2 "python /apdcephfs/share_782420/hagtliu/project/yolov7/train.py --workers 8 --device 0 --batch-size 32 --data /apdcephfs/share_782420/hagtliu/project/yolov7/data/coco_devcloud.yaml --img 640 640 --cfg /apdcephfs/share_782420/hagtliu/project/yolov7/cfg/training/yolov7.yaml --weights '' --name yolov7 --hyp /apdcephfs/share_782420/hagtliu/project/yolov7/data/hyp.scratch.p5.yaml"

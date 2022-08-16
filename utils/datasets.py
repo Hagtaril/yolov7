@@ -346,7 +346,9 @@ class LoadStreams:  # multiple IP or RTSP cameras
 
 def img2label_paths(img_paths):
     # Define label paths as a function of image paths
-    sa, sb = os.sep + 'images' + os.sep, os.sep + 'labels' + os.sep  # /images/, /labels/ substrings
+    # sa, sb = os.sep + 'images' + os.sep, os.sep + 'labels' + os.sep  # /images/, /labels/ substrings
+    # only for devcloud data_pose
+    sa, sb = os.sep + 'coco2017' + os.sep, os.sep + 'coco2017' + os.sep + 'labels' + os.sep
     return ['txt'.join(x.replace(sa, sb, 1).rsplit(x.split('.')[-1], 1)) for x in img_paths]
 
 
@@ -388,12 +390,12 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
         # Check cache
         self.label_files = img2label_paths(self.img_files)  # labels
         cache_path = (p if p.is_file() else Path(self.label_files[0]).parent).with_suffix('.cache')  # cached labels
-        if cache_path.is_file():
-            cache, exists = torch.load(cache_path), True  # load
+        # if cache_path.is_file():
+            # cache, exists = torch.load(cache_path), True  # load
             #if cache['hash'] != get_hash(self.label_files + self.img_files) or 'version' not in cache:  # changed
             #    cache, exists = self.cache_labels(cache_path, prefix), False  # re-cache
-        else:
-            cache, exists = self.cache_labels(cache_path, prefix), False  # cache
+        # else:
+        cache, exists = self.cache_labels(cache_path, prefix), False  # cache
 
         # Display cache
         nf, nm, ne, nc, n = cache.pop('results')  # found, missing, empty, corrupted, total
@@ -515,7 +517,8 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
         if nf == 0:
             print(f'{prefix}WARNING: No labels found in {path}. See {help_url}')
 
-        x['hash'] = get_hash(self.label_files + self.img_files)
+        # x['hash'] = get_hash(self.label_files + self.img_files)
+        x['hash'] = 20220811
         x['results'] = nf, nm, ne, nc, i + 1
         x['version'] = 0.1  # cache version
         torch.save(x, path)  # save for next time
